@@ -21,10 +21,17 @@ class Database{
             if(err) throw err;
             res.send("stagiaire bien enregistré")
         });
+    } 
+    deleteQuery(sql,id,res){
+        this.con.query(sql,[id], function(err,result){
+            if(err) throw err;
+            res.send("stagiaire bien supprime")
+        });
     }
     getQuery(sql, res){
         this.con.query(sql, function(err, result){
             if(err) throw err;
+            console.log(result)
             res.send(result)
         });
     }

@@ -2,9 +2,13 @@ import { faCheckSquare, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import React, { useEffect,createElement, useState } from 'react'
+import { confirmAlert } from 'react-confirm-alert'
 import { BrowserRouter, Link, Route, Switch} from 'react-router-dom'
+import { Confirm } from '../confirm'
 import { header } from '../Header/style'
+import { MS } from '../MS'
 import { headerAdmine } from './style'
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 
 
@@ -12,27 +16,34 @@ import { headerAdmine } from './style'
 function Admin() {
     const [data, setData]=useState([])
     const[ms, setMs]= useState([])
+    
+    const supSta= async (id)=>{
+        await axios.delete(`http://localhost:5000/supSta/${id}`).then((response)=>{
+           
+        })
+        .catch((err)=> console.log(err))
+    }
     const fetchData= async ()=>{
         await axios.get('http://localhost:5000/stagiaire').then((response)=>{
             setData(response.data)
         })
         .catch((err)=> console.log(err))
     }
-
-    useEffect(() => {
-       fetchData()
-    }, [])
     const fetchMs= async ()=>{
-        await axios.get('http://localhost:5000/MS').then((resp)=>{
-            setMs(resp.ms)
+        await axios.get('http://localhost:5000/MS').then((response)=>{
+            setMs(response.data)
         })
         .catch((err)=> console.log(err))
     }
+    useEffect(() => {
+        console.log(ms)
+        console.log(data)
+    }, [ms, data])
 
     useEffect(() => {
-       fetchMs()
-    }, [])
-
+        fetchData()
+        fetchMs()
+     }, [])
     return (
         <div className="admin" style={headerAdmine.general}>
                        <nav style={headerAdmine.script}>
@@ -71,27 +82,54 @@ function Admin() {
                         </tr>
 
                         {
+                            data &&
                             data.map((stagiaire,index)=>(
-                                <tr>
+                                <tr key={index}>
                                     <td>{stagiaire.nomSta}</td>
                                     <td>{stagiaire.prenomSta}</td>
                                     <td>{stagiaire.telSta}</td>
                                     <td>{stagiaire.adrSta}</td>
                                     <td>
-                                        <Link>
-                                            <FontAwesomeIcon icon={faTrashAlt} color="black" size="2x"/>
-                                        </Link>
+                                        <button onClick={ () => {
+                                        const options = {
+                                            title:'Supprimer le stagiaire',
+                                            message: 'Voulez-vous vraiment supprimer ce stagiaire?',
+                                            buttons:[
+                                                {
+                                                label: 'Oui',
+                                                onClick: () => supSta(stagiaire.idSta)
+                                                },
+                                                {
+                                                label: 'Annuler',
+                                                onClick: () => alert('Click No')
+                                                }
+                                            ],
+                                            childrenElement: () => <div />,
+                                            closeOnEscape: true,
+                                            closeOnClickOutside: true,
+                                            willUnmount: () => {},
+                                            afterClose: () => {},
+                                            onClickOutside: () => {},
+                                            onKeypressEscape: () => {},
+                                            overlayClassName: "overlay-custom-class-name"
+                                        };
+                                        confirmAlert(options);
+                                    }
+                                    }>
+                                           {<FontAwesomeIcon icon={faTrashAlt} color="black" size="2x"/>}
+                                        </button>
+                                          
                                     </td>
                                     <td>
-                                        <Link>
-                                            <FontAwesomeIcon icon={faUserEdit} color="black" size="2x"/>
-                                        </Link>
+                                            <FontAwesomeIcon icon={faUserEdit} color="black" size="2x" onClick=""/>
                                     </td>
                               </tr>
                             ))
                         }
                         
                     </table> 
+                </div>
+                <div id="contenu">
                     <h1>Liste des maîtres de stage</h1>
                    <table border="1">
                        <tr>
@@ -104,31 +142,37 @@ function Admin() {
                        </tr>
 
                        {
-                            data.map((m,index)=>(
-                                <tr>
-                                    <td>{m.nomSta}</td>
-                                    <td>{m.prenomSta}</td>
-                                    <td>{m.telSta}</td>
-                                    <td>{m.adrSta}</td>
+                           ms &&
+                            ms.map((m,index)=>(
+                               <tr key={index}>
+                                    <td>{m.nomMS}</td>
+                                    <td>{m.prenomMS}</td>
+                                    <td>{m.telMS}</td>
+                                    <td>{m.adrMS}</td>
                                     <td>
-                                        <Link>
-                                            <FontAwesomeIcon icon={faTrashAlt} color="black" size="2x"/>
-                                        </Link>
+                                        <FontAwesomeIcon icon={faTrashAlt} color="black" size="2x" onClick=""/>
                                     </td>
                                     <td>
-                                        <Link>
-                                            <FontAwesomeIcon icon={faUserEdit} color="black" size="2x"/>
-                                        </Link>
+                                        <FontAwesomeIcon icon={faUserEdit} color="black" size="2x" onClick=""/>
                                     </td>
-                              </tr>
+                            </tr> 
+                            
                             ))
                         }
                         
                    </table>
+                   </div>
+                   {
+                           ms &&
+                            ms.map((m,index)=>(
+                                
+                        <div>{m.nomMs}</div>
+                        ))
+                    }
                     <p id="footer">Réalisation des codes HTML/CSS, du tutoriel et du design par ElMoustiko</p>
                 </div>
             </div>
-        </div>
+        
     )
 }
 

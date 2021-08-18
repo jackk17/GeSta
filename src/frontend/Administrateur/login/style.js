@@ -1,3 +1,4 @@
+import loginBack from '../../../images/login.jpg'
 export const forme={
     body:{
         margin:'0',
@@ -12,7 +13,7 @@ export const forme={
         top:'50%',
         left:'50%',
         transform:'translate(-50%,-50%)',
-        backgroundImage:'',
+        backgroundImage:`url(${loginBack})`,
         textAlign: 'center',
         fontFamily:'perpetua',
         fontSize:'20px'

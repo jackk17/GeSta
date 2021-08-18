@@ -20,10 +20,10 @@ app.post('/Enregistrer',(req,res)=>{
 })
 app.post('/MS',(req,res)=>{
     const data1= req.body
-    const ms="INSERT INTO ms (nomMs, prenomMs, telMs, adrMs, fonction, codSec) VALUES?"
+    const ms="INSERT INTO ms (codMS, nomMs, prenomMs, telMs, adrMs, fonction, codSec) VALUES?"
     var values=[
         [
-            `${data1.nom}`, `${data1.prenom}`,`${data1.tel}`,`${data1.adr}`,`${data1.fonction}`,`${data1.code}`
+            `${data1.codeMS}`,  `${data1.nom}`, `${data1.prenom}`,`${data1.tel}`,`${data1.adr}`,`${data1.fonction}`,`${data1.code}`
         ]
     ]
     db.postQuery(ms,values, res)
@@ -33,16 +33,10 @@ app.get('/listeMS',(req,res)=>{
     db.getQuery(sect, res)
 })
 app.delete('/supSta/:id',(req,res)=>{
-  /* mysqlConnection.query('DELETE FROM stagiaire WHERE idSta = ?',[req.params.id],(err,rows,fields)=>{
-        if(!err)
-        res.send('Supression réussi');
-        else
-        console.log(err);
-   })*/
-   const data2=req.body.id
-   var supSta="DELETE FROM stagiaire WHERE idSta = ?"
-   //var id= `${data2.id}`
-    db.postQuery(supSta,data2, res)
+
+   const data2=req.params.id
+   var supSta=`DELETE FROM stagiaire WHERE idSta = ?`
+    db.deleteQuery(supSta, data2,res)
 
 })
 app.get('/section',(req,res)=>{
@@ -50,11 +44,11 @@ app.get('/section',(req,res)=>{
     db.getQuery(sect, res)
 })
 app.get('/MS',(req,res)=>{
-    var ms="SELECT nomMS, prenomMS, telMS, adrMS FROM ms"
+    var ms="SELECT codMS, nomMS, prenomMS, telMS, adrMS FROM ms"
     db.getQuery(ms, res)
 })
 app.get('/stagiaire',(req,res)=>{
-    var sta="SELECT nomSta, prenomSta, telSta, adrSta FROM stagiaire"
+    var sta="SELECT idSta, nomSta, prenomSta, telSta, adrSta FROM stagiaire"
     db.getQuery(sta, res)
 })
 

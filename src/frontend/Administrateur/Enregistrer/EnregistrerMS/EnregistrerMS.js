@@ -8,6 +8,7 @@ import { headerAdmine } from '../../style'
 
 
 function EnregistrerMS() {
+    const[codeMS, setCodeMS]= useState("")
     const[nom, setNom]= useState("")
     const[prenom, setPrenom]= useState("")
     const[tel, setTel]= useState("")
@@ -17,6 +18,7 @@ function EnregistrerMS() {
     const soumettre = async (e)=>{
         e.preventDefault()
         await axios.post('http://localhost:5000/MS', {
+            codeMS:codeMS,
             nom: nom,
             prenom: prenom,
             tel: tel,
@@ -77,6 +79,14 @@ function EnregistrerMS() {
                     <form onSubmit="" style={form.forme} >
                         <div  style={form.allpartie}>
                             <div style={form.partie1}>
+                            <div className="form-group">
+                                    <div style={{display:"flex"}}>
+                                        Code:
+                                    </div>
+                                    <div style={{display:"flex"}}>
+                                        <input type="text" value={codeMS} onChange={(e)=>setCodeMS(e.target.value)}></input>
+                                    </div>
+                                </div>
                                 <div className="form-group">
                                     <div style={{display:"flex"}}>
                                         Nom:
@@ -121,11 +131,11 @@ function EnregistrerMS() {
                                     <div style={{display:"flex"}}>
                                         Code de sécurité:
                                     </div>
-                                        <select>
+                                        <select onChange={(e) => setCode(e.target.value)}>
                                            {
                                                     data?
                                                     data.map((user)=>(
-                                                      <option value={code} key={user.codeSec} onSelect={(e)=>setCode(e.target.value)}>
+                                                      <option value={user.codSec} key={user.codSec}>
                                                            {user.libSec}
                                                       </option>
                                                     )):
