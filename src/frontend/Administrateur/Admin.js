@@ -1,4 +1,4 @@
-import { faCheckSquare, faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faArrowCircleUp, faArrowDown, faArrowsAlt, faArrowUp, faCheckSquare, faSign, faTrashAlt, faUserEdit, faWonSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import React, { useEffect,createElement, useState } from 'react'
@@ -9,29 +9,29 @@ import { header } from '../Header/style'
 import { MS } from '../MS'
 import { headerAdmine } from './style'
 import 'react-confirm-alert/src/react-confirm-alert.css'
-
-
+import './Admin.css'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { requestStagiaires } from '../../states/actions/stagiareActions'
+import { requestMs } from '../../states/actions/msActions'
 
 
 function Admin() {
     const [data, setData]=useState([])
-    const[ms, setMs]= useState([])
-    
+    const[m, setMs]= useState([])
+    const dispatch = useDispatch()
+
+    const stagiairesState = useSelector(state => state.stagiaires)
+    const msState = useSelector(state => state.ms)
+    const {loading, stagiaires, error} = stagiairesState
+    const {loadings, ms, err} = msState
     const supSta= async (id)=>{
         await axios.delete(`http://localhost:5000/supSta/${id}`).then((response)=>{
-           
         })
         .catch((err)=> console.log(err))
     }
-    const fetchData= async ()=>{
-        await axios.get('http://localhost:5000/stagiaire').then((response)=>{
-            setData(response.data)
-        })
-        .catch((err)=> console.log(err))
-    }
-    const fetchMs= async ()=>{
-        await axios.get('http://localhost:5000/MS').then((response)=>{
-            setMs(response.data)
+    const supMs= async (id)=>{
+        await axios.delete(`http://localhost:5000/supMs/${id}`).then((response)=>{
         })
         .catch((err)=> console.log(err))
     }
@@ -41,56 +41,74 @@ function Admin() {
     }, [ms, data])
 
     useEffect(() => {
-        fetchData()
-        fetchMs()
-     }, [])
-    return (
-        <div className="admin" style={headerAdmine.general}>
-                       <nav style={headerAdmine.script}>
-                           <ul style={{float:'right', marginRight:'20px'}} >
-                               
-                                    <Link to="/Enregistrer/choix">                                   
-                                     <li style={{display:'inline-block',lineHeight:'80px',margin:'0 5px'}}>
-                                         <a style={{color:'green',fontSize:'17px'}}>Enregistrer</a></li>       
-                                    </Link>
-                           
-                                    <Link to="stats">
-                                      <li style={{display:'inline-block',lineHeight:'80px',margin:'0 5px'}}>
-                                          <a style={{color:'green',fontSize:'17px'}}>statistiques</a>
-                                        </li> 
-                                    </Link>
+        dispatch(requestStagiaires())
+        dispatch(requestMs())
+     }, [dispatch])
 
-                                    <Link to="/section&ms">    
-                                     <li style={{display:'inline-block',lineHeight:'80px',margin:'0 5px'}}>
-                                         <a style={{color:'green',fontSize:'17px'}}>Affecter</a>
-                                        </li>                       
-                                    </Link>                             
+    return (
+        <div className="admin" style={{...headerAdmine.general,width:'100%'}}>
+                       <nav style={headerAdmine.script}>
+                           <ul style={{float:'right', marginRight:'20px', display:'flex', width:'40%', flexDirection:'row', justifyContent:'space-around'}} > 
+                                    <li style={{margin:'6px'}}>
+                                      <Link to="/login" onClick={
+                                          (e) => {
+                                              sessionStorage.removeItem('login')
+                                              sessionStorage.removeItem('mdp')
+                                              window.location.reload()
+                                          }
+                                      }>        
+                                         Déconnecter                  
+                                      </Link> 
+                                    </li>    
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="/Admin">        
+                                         Acceuil                  
+                                      </Link> 
+                                    </li>                                                           
+                                    <li style={{margin:'6px'}}>
+                                       <Link to="/Enregistrer/choix"> 
+                                           Enregistrer
+                                        </Link>
+                                    </li>       
+                                    <li style={{margin:'6px'}}>
+                                     <Link to="stats">
+                                         statistiques
+                                     </Link>
+                                    </li> 
+                                    <li style={{margin:'6px'}}>
+                                      <Link to="/section&ms">        
+                                         Affecter                  
+                                      </Link> 
+                                    </li>                             
                            </ul>
                        </nav>
             <div id="conteneur">    
-                <h1 id="header"><a title="Colored Design - Accueil"><span>ADMINISTRATEUR</span></a></h1>
+                <h1 id="header" title="Colored Design - Accueil" style={{color:'yellow'}}>ADMINISTRATEUR</h1>
                 <div id="contenu">
-                    <h1>Liste des Stagiaires</h1>
+                    <h1 style={{color:'yellow'}}>Liste des Stagiaires</h1>
                     <table border="1">
                         <tr>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Téléphone</th>
                             <th>Adresse</th>
+                            <th>Fin de stage</th>
                             <th>supprimer</th>
                             <th>modifier</th>
+                            <th>Renouveler</th>
                         </tr>
 
                         {
-                            data &&
-                            data.map((stagiaire,index)=>(
+                            stagiaires &&
+                            stagiaires.map((stagiaire,index)=>(
                                 <tr key={index}>
                                     <td>{stagiaire.nomSta}</td>
                                     <td>{stagiaire.prenomSta}</td>
                                     <td>{stagiaire.telSta}</td>
                                     <td>{stagiaire.adrSta}</td>
+                                    <td>{stagiaire.finSta}</td>
                                     <td>
-                                        <button onClick={ () => {
+                                        <button style={{width:'100%', backgroundColor:'white'}} onClick={ () => {
                                         const options = {
                                             title:'Supprimer le stagiaire',
                                             message: 'Voulez-vous vraiment supprimer ce stagiaire?',
@@ -101,7 +119,7 @@ function Admin() {
                                                 },
                                                 {
                                                 label: 'Annuler',
-                                                onClick: () => alert('Click No')
+                                                onClick: () => alert('Suppression annulée')
                                                 }
                                             ],
                                             childrenElement: () => <div />,
@@ -121,7 +139,14 @@ function Admin() {
                                           
                                     </td>
                                     <td>
-                                            <FontAwesomeIcon icon={faUserEdit} color="black" size="2x" onClick=""/>
+                                        <button style={{width:'100%', backgroundColor:'white'}}>
+                                          <FontAwesomeIcon icon={faUserEdit} color="black" size="2x" onClick=""/>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button style={{width:'100%', backgroundColor:'white'}}>
+                                          <FontAwesomeIcon icon={faArrowCircleUp} color="black" size="2x" onClick=""/>
+                                        </button>
                                     </td>
                               </tr>
                             ))
@@ -130,7 +155,7 @@ function Admin() {
                     </table> 
                 </div>
                 <div id="contenu">
-                    <h1>Liste des maîtres de stage</h1>
+                    <h1 style={{color:'yellow'}}>Liste des maîtres de stage</h1>
                    <table border="1">
                        <tr>
                             <th>Nom</th>
@@ -150,10 +175,39 @@ function Admin() {
                                     <td>{m.telMS}</td>
                                     <td>{m.adrMS}</td>
                                     <td>
-                                        <FontAwesomeIcon icon={faTrashAlt} color="black" size="2x" onClick=""/>
+                                        <button style={{width:"100%", backgroundColor:'white'}} onClick={ () => {
+                                        const options = {
+                                            title:'Supprimer le maître de stage',
+                                            message: 'Voulez-vous vraiment supprimer ce maître de stage?',
+                                            buttons:[
+                                                {
+                                                label: 'Oui',
+                                                onClick: () => supMs(m.codMS)
+                                                },
+                                                {
+                                                label: 'Annuler',
+                                                onClick: () => alert('Click No')
+                                                }
+                                            ],
+                                            childrenElement: () => <div />,
+                                            closeOnEscape: true,
+                                            closeOnClickOutside: true,
+                                            willUnmount: () => {},
+                                            afterClose: () => {},
+                                            onClickOutside: () => {},
+                                            onKeypressEscape: () => {},
+                                            overlayClassName: "overlay-custom-class-name"
+                                        };
+                                        confirmAlert(options);
+                                    }
+                                    }>
+                                         <FontAwesomeIcon icon={faTrashAlt} color="black" size="2x" onClick=""/>
+                                        </button>
                                     </td>
                                     <td>
-                                        <FontAwesomeIcon icon={faUserEdit} color="black" size="2x" onClick=""/>
+                                        <button style={{width:"100%", backgroundColor:'white'}}>
+                                          <FontAwesomeIcon icon={faUserEdit} color="black" size="2x" onClick=""/>
+                                        </button>
                                     </td>
                             </tr> 
                             
@@ -164,12 +218,11 @@ function Admin() {
                    </div>
                    {
                            ms &&
-                            ms.map((m,index)=>(
-                                
+                            ms.map((m,index)=>(   
                         <div>{m.nomMs}</div>
                         ))
                     }
-                    <p id="footer">Réalisation des codes HTML/CSS, du tutoriel et du design par ElMoustiko</p>
+                    <p id="footer"style={{color:'yellow'}}>TOGOCEL LE LEADER</p>
                 </div>
             </div>
         

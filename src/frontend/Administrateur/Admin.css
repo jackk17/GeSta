@@ -1,0 +1,33 @@
+a{
+    color: green;
+}
+a:hover {
+    color: white;
+}
+table {
+    border: medium solid #e0e04e;
+    border-collapse: collapse;
+    width: 100%;
+    }
+    th {
+    font-family: monospace;
+    border: thin solid #3acc4d;
+    width: 50%;
+    padding: 5px;
+    background-color: #6cd375;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: medium;
+    }
+    td {
+    font-family: sans-serif;
+    border: thin solid #4ecc5f;
+    width: 50%;
+    text-align: center;
+    background-color: #ffffff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size:small;
+    }
+    caption {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: medium;
+    }

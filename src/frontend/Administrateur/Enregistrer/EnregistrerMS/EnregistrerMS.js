@@ -2,7 +2,12 @@ import { faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import React, {useEffect, useState } from 'react'
+import { confirmAlert } from 'react-confirm-alert'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { createMs } from '../../../../states/actions/msActions'
+import { Confirm } from '../../../confirm'
+import { Stagiaire } from '../../../Stagiaire'
 import { form } from '../../../Stagiaire/style'
 import { headerAdmine } from '../../style'
 
@@ -15,21 +20,24 @@ function EnregistrerMS() {
     const[adr, setAdr]= useState("")
     const[fonction,setFonction]= useState("")
     const[code, setCode]= useState("")
+    const[log, setLog]= useState("")
+    const[mdp, setMdp]= useState("")
+    const dispatch = useDispatch()
+    var msg
     const soumettre = async (e)=>{
         e.preventDefault()
-        await axios.post('http://localhost:5000/MS', {
+        const payload = {
             codeMS:codeMS,
             nom: nom,
             prenom: prenom,
             tel: tel,
-            adr: adr,
-            fonction: fonction,
+            adr: adr, 
+           fonction:fonction,
             code: code,
-        }).then((response)=>{
-            console.log(response)
-        }).catch((error)=>{
-            console.log(error)
-        });
+            log:log,
+            mdp:mdp
+        }
+        dispatch(createMs(payload))
     };
     const [data, setData]=useState([])
 
@@ -45,38 +53,41 @@ function EnregistrerMS() {
     }, [])
 
     return (
-        <div>
-             <div style={headerAdmine.general}>  
-                   <div style={headerAdmine.script}>   
-                       
-                            <div>
-                                <Link to="/enregistrer">                                   
-                                        <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}> Enregistrer</span>                               
-                                    </Link>
-                            </div>
-                            <div>
-                                <Link to="stats">
-                                    <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}>statistiques</span>
-                                </Link>
-                            </div>
-                            <div>
-                                <div>
-                                    <FontAwesomeIcon icon={faCheckSquare} color="white" size="2px"/>
-                                </div>
-                                <div>
-                                    <Link to="/section&ms">                                  
-                                    <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}> Affecter</span>                                       
-                                    </Link>
-                                </div>
-                            </div>
-       
-                   </div>
-            </div>
-            <div id="contenu" style={{backgroundColor:"red", width:"100%", fontFamily:"cortana",fontSize:"20px"}}>
+        <div style={{width:'100%'}}>
+            <nav style={headerAdmine.script}>
+                           <ul style={{float:'right', marginRight:'20px', display:'flex', width:'40%', flexDirection:'row', justifyContent:'space-around'}} > 
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="">        
+                                        Déconnecter                  
+                                      </Link> 
+                                    </li>     
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="/Admin">        
+                                         Acceuil                  
+                                      </Link> 
+                                    </li>                                                           
+                                    <li style={{margin:'6px'}}>
+                                       <Link to="/Enregistrer/choix"> 
+                                           Enregistrer
+                                        </Link>
+                                    </li>       
+                                    <li style={{margin:'6px'}}>
+                                     <Link to="stats">
+                                         statistiques
+                                     </Link>
+                                    </li> 
+                                    <li style={{margin:'6px'}}>
+                                      <Link to="/section&ms">        
+                                         Affecter                  
+                                      </Link> 
+                                    </li>                             
+                           </ul>
+                       </nav>
+          <div id="contenu" style={{backgroundColor:"red", width:"100%", fontFamily:"cortana",fontSize:"20px"}}>
                     <p>Enregistrez un Maître de stage</p>
                 </div>
                 <div className="utilisateurs" style={{fontFamily:"cortana",fontSize:"20px"}}>
-                    <form onSubmit="" style={form.forme} >
+                <form onSubmit="" style={form.forme} >
                         <div  style={form.allpartie}>
                             <div style={form.partie1}>
                             <div className="form-group">
@@ -142,10 +153,26 @@ function EnregistrerMS() {
                                                     undefined
                                             }
                                         </select>
+                              </div>
+                              <div className="form-group">
+                                    <div style={{display:"flex"}}>
+                                        Login:
+                                    </div>
+                                    <div style={{display:"flex"}}>
+                                        <input type="text" value={log} onChange={(e)=>setLog(e.target.value)}></input>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <div style={{display:"flex"}}>
+                                        Mot de passe:
+                                    </div>
+                                    <div style={{display:"flex"}}>
+                                        <input type="text" value={mdp} onChange={(e)=>setMdp(e.target.value)}></input>
+                                    </div>
                                 </div>
                             </div> 
                        </div>
-                        <button onClick={soumettre}>Soumettre</button>
+                        <button onClick={soumettre, alert("Maître de stage bien enrégistré.")}>Soumettre</button>
                     </form>
                 </div>
               

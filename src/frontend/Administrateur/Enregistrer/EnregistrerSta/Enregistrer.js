@@ -2,7 +2,9 @@ import { faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { createStagiaires } from '../../../../states/actions/stagiareActions'
 import { form } from '../../../Stagiaire/style'
 import { headerAdmine } from '../../style'
 
@@ -18,9 +20,10 @@ function Enregistrer() {
     const [nat, setNat]= useState("")
     const [sex, setSex]= useState("")
     const [naiss, setNaiss]= useState("")
+    const dispatch = useDispatch()
     const soumettre = async (e)=>{
         e.preventDefault()
-        await axios.post('http://localhost:5000/Enregistrer', {
+        const payload = {
             nom: nom,
             prenom: prenom,
             tel: tel,
@@ -31,41 +34,41 @@ function Enregistrer() {
             nat: nat,
             sex: sex,
             naiss: naiss
-        }).then((response)=>{
-            console.log(response)
-        }).catch((error)=>{
-            console.log(error)
-        });
+        }
+        dispatch(createStagiaires(payload))
     };
     return (
-        <div>
-             <div style={headerAdmine.general}>  
-                   <div style={headerAdmine.script}>   
-                       
-                            <div>
-                                <Link to="/enregistrer">                                   
-                                        <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}> Enregistrer</span>                               
-                                    </Link>
-                            </div>
-                            <div>
-                                <Link to="stats">
-                                    <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}>statistiques</span>
-                                </Link>
-                            </div>
-                            <div>
-                                <div>
-                                    <FontAwesomeIcon icon={faCheckSquare} color="white" size="2px"/>
-                                </div>
-                                <div>
-                                    <Link to="/section&ms">                                  
-                                    <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}> Affecter</span>                                       
-                                    </Link>
-                                </div>
-                            </div>
-       
-                   </div>
-            </div>
-            <div id="contenu" style={{backgroundColor:"red", width:"100%", fontFamily:"cortana",fontSize:"20px"}}>
+        <div style={{width:'100%'}}>
+         <nav style={headerAdmine.script}>
+                           <ul style={{float:'right', marginRight:'20px', display:'flex', width:'40%', flexDirection:'row', justifyContent:'space-around'}} > 
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="">        
+                                        Déconnecter                  
+                                      </Link> 
+                                    </li>     
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="/Admin">        
+                                         Acceuil                  
+                                      </Link> 
+                                    </li>                                                           
+                                    <li style={{margin:'6px'}}>
+                                       <Link to="/Enregistrer/choix"> 
+                                           Enregistrer
+                                        </Link>
+                                    </li>       
+                                    <li style={{margin:'6px'}}>
+                                     <Link to="stats">
+                                         statistiques
+                                     </Link>
+                                    </li> 
+                                    <li style={{margin:'6px'}}>
+                                      <Link to="/section&ms">        
+                                         Affecter                  
+                                      </Link> 
+                                    </li>                             
+                           </ul>
+                       </nav>
+          <div id="contenu" style={{backgroundColor:"red", width:"100%", fontFamily:"cortana",fontSize:"20px"}}>
                     <p>Enregistrez un stagiaire</p>
                 </div>
                 <div className="utilisateurs" style={{fontFamily:"cortana",fontSize:"20px"}}>

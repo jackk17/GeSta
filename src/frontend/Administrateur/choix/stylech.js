@@ -1,5 +1,4 @@
-import loginBack from '../../../images/login.jpg'
-export const forme={
+export const choi={
     body:{
         margin:'0',
         padding:'0',
@@ -13,10 +12,10 @@ export const forme={
         top:'50%',
         left:'50%',
         transform:'translate(-50%,-50%)',
-        backgroundImage:`url(${loginBack})`,
         textAlign: 'center',
         fontFamily:'perpetua',
-        fontSize:'20px'  
+        fontSize:'20px',
+        backgroundColor:'white'
     },
     input:{
         border:'4',

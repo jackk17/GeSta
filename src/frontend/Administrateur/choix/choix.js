@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { choi } from './stylech'
 
 function choix() {
     return (
-        <div>
-            <nav>
+        <div style={choi.body}>
+            <nav style={choi.box}>
                 <strong>Qui voulez enregistrer?</strong>
                 <div>
                     <Link to="/EnregistrerMS">

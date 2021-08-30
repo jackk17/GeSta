@@ -16,7 +16,8 @@ export const header = {
     tete:{
         margin:0,
         padding:0,
-        height:150
+        height:150,
+        flex:1
     }
 }
 

@@ -5,13 +5,16 @@ export const headerAdmine={
        textDecoration:'none',
        listStyle:'none',
        boxSizing:'borderBox',
-       fontFamily:'montserrat'
+       fontFamily:'montserrat',
+       widht:'100%'
      },
   script:{
-        margin:0,
-        padding:0,
+       margin:0,
+       padding:0,
        backgroundColor:'black',
        height:'60px',
-       widht:'100%'
+       widht:'100%',
+       fontFamily:'verdana',
+       fontSize:'15px'
     },
 }

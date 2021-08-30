@@ -1,10 +1,9 @@
-import loginBack from '../../../images/login.jpg'
-export const forme={
+
+export const affecter={
     body:{
         margin:'0',
         padding:'0',
         fontFamily:'sans-serif',
-        background:'black'
     },
     box:{
         width:'300px',
@@ -13,14 +12,13 @@ export const forme={
         top:'50%',
         left:'50%',
         transform:'translate(-50%,-50%)',
-        backgroundImage:`url(${loginBack})`,
         textAlign: 'center',
         fontFamily:'perpetua',
-        fontSize:'20px'  
+        fontSize:'20px'  ,
+        background:'white'
     },
     input:{
         border:'4',
-        background:'white',
         display:'block',
         margin:'20px auto',
         textAlign:'center',

@@ -1,5 +1,5 @@
-import affecter from "./affecter";
+import Affecter from "./Affecter"
 
 export{
-    affecter
+    Affecter
 }

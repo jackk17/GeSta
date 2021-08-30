@@ -1,20 +1,13 @@
 export const form={
     forme:{
         backgroundColor:"green",
-        position:'absolute',
+        position:'fixed',
         top:'50%',
         left:'50%',
-        transform:'translate(-50%,-50%)',
-/*border:"2",
- border-radius
-box-shadow
-color
-cursor
-display
-font-family, font-size, font-weight
-margin
-padding
-width*/
+        width: '500px',
+        height: '500px',
+        margin: '-250px 0 0 -250px'
+
  },
  allpartie:{
     width:"100%"
@@ -24,7 +17,7 @@ width*/
     height:"50px",
     backgroundColor:"white",
     border:"1px solid #CCC",
-    width:"1000px",
+    width:"1000",
     margin:"0px auto",
     position:"relative",
     textAlign:"center",

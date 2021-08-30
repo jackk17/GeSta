@@ -6,34 +6,36 @@ import { headerAdmine } from '../style'
 
 function stats() {
     return (
-        <div>
-             <div style={headerAdmine.general}>  
-                   <div style={headerAdmine.script}>   
-                       
-                            <div>
-                                <Link to="/enregistrer">                                   
-                                        <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}> Enregistrer</span>                               
-                                    </Link>
-                            </div>
-                            <div>
-                                <Link to="stats">
-                                    <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}>statistiques</span>
-                                </Link>
-                            </div>
-                            <div>
-                                <div>
-                                    <FontAwesomeIcon icon={faCheckSquare} color="white" size="2px"/>
-                                </div>
-                                <div>
-                                    <Link to="/section&ms">                                  
-                                    <span style={{fontFamily: "cortana", fontSize:"25px", color: "green"}}> Affecter</span>                                       
-                                    </Link>
-                                </div>
-                            </div>
-       
-                   </div>
-            </div>
-           
+        <div style={{width:'100%'}}>
+             <nav style={headerAdmine.script}>
+                           <ul style={{float:'right', marginRight:'20px', display:'flex', width:'40%', flexDirection:'row', justifyContent:'space-around'}} > 
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="/login">        
+                                        Déconnecter                  
+                                      </Link> 
+                                    </li>     
+                                   <li style={{margin:'6px'}}>
+                                      <Link to="/Admin">        
+                                         Acceuil                  
+                                      </Link> 
+                                    </li>                                                           
+                                    <li style={{margin:'6px'}}>
+                                       <Link to="/Enregistrer/choix"> 
+                                           Enregistrer
+                                        </Link>
+                                    </li>       
+                                    <li style={{margin:'6px'}}>
+                                     <Link to="stats">
+                                         statistiques
+                                     </Link>
+                                    </li> 
+                                    <li style={{margin:'6px'}}>
+                                      <Link to="/section&ms">        
+                                         Affecter                  
+                                      </Link> 
+                                    </li>                             
+                           </ul>
+                       </nav>
              <p>hey</p>
         </div>
     )
